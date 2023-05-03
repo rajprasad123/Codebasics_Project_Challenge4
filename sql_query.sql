@@ -175,8 +175,7 @@ order by sum(sold_quantity) desc;
 -- gross_sales_mln
 -- percentage
 
- with 
- cte as(
+ with cte as(
 select
     c.channel,
     round(sum(s.sold_quantity*g.gross_price)/1000000,2) as gross_sales_mln
@@ -189,10 +188,13 @@ on
 	g.product_code=s.product_code and
     g.fiscal_year=s.fiscal_year
 where s.fiscal_year=2021
-group by c.channel
+group by channel
 order by gross_sales_mln desc
 )
-select * from cte;
+select
+	*,
+    CONCAT(round(gross_sales_mln*100/sum(gross_sales_mln) over(),2),"%")as percentage
+from cte;
  
  -- 10 Get the Top 3 products in each division that have a high total_sold_quantity in the fiscal_year 2021? 
 -- The final output contains these fields,
