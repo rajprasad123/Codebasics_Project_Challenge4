@@ -45,50 +45,33 @@ order by count(distinct(product)) desc;
 -- product_count_2021
 -- difference
 
-with
-cte20 as
-(select 
-	p.segment,
-    count(distinct(f.product_code)) as product_count_2020		
-from fact_sales_monthly as f
-join 
-	dim_product as p
-using(product_code)
-where fiscal_year=2020
-group by segment
-order by product_count_2020 desc
-),
-cte21 as
-(select
-		p.segment,
-        count(distinct(f.product_code)) as product_count_2021
-
-from fact_sales_monthly as f
-join 
-	dim_product as p
-using(product_code)
-where fiscal_year=2021
-group by segment
-order by product_count_2021 desc),
-cte_table as 
-(select 
-	cte20.segment,
-    product_count_2021,
-    product_count_2020,
-    (product_count_2021-product_count_2020) as difference
-		
-from cte20
-join cte21
-using(segment)
-)
-
-select
-	segment,
-    product_count_2021,
-    product_count_2020,
-    difference
-from cte_table
-order by difference desc;
+With 
+cte1 as 
+	(select p.segment as a , 
+            COUNT(DISTINCT(fs.product_code)) AS b 
+    from dim_product as p, 
+         fact_sales_monthly as fs
+    where 
+         p.product_code = fs.product_code
+    group by FS.fiscal_year, P.segment
+    having FS.fiscal_year = "2020"),
+cte2 as
+    (
+	select p.segment as c , COUNT(DISTINCT(fs.product_code)) AS d 
+    from dim_product as p, 
+	 fact_sales_monthly as fs
+    where p.product_code = fs.product_code
+    group by fs.fiscal_year,
+	     p.segment
+    having fs.fiscal_year = "2021"
+    )     
+    
+select cte1.a as segment,
+       cte2.b as product_count_2020,
+       cte2.d as product_count_2021, (cte2.d-cte1.b) as difference  
+FROM cte1, 
+     cte2
+where cte1.a = cte2.c ;
 
  -- 5 Get the products that have the highest and lowest manufacturing costs.
 -- The final output should contain these fields,
