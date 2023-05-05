@@ -16,3 +16,17 @@ This file provides a comprehensive overview of the tables found in the 'gdb023' 
 4. fact_manufacturing_cost: contains the cost incurred in the production of each product
 5. fact_pre_invoice_deductions: contains pre-invoice deductions information for each product
 6. fact_sales_monthly: contains monthly sales data for each product.
+
+  🌟 TOOLS & APPROACH 🌟
+
+MySQL, PowerBI.
+
+· MySQL - Concepts like Joins, CTEs, Subqueries, Window functions, String functions, Numeric functions etc.
+· PowerBI - visuals like Sunburst Chart, Bar Chart, Matrix, Line Chart, Maps, Donut Chart, etc.
+
+🌟 FINDINGS & SOLUTIONS 🌟
+
+· Findings - Important metrics such as Gross Profit, Contribution %, Average Gross Sales, Average Manufacturing Cost, etc.
+
+· Solutions - Increasing production rate by enticing customers with memberships, bundled deals, student discounts, and other special offers.
+
